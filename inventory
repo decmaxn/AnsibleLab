@@ -2,7 +2,10 @@
 [iis]
 s12	ansible_host=192.168.33.253
 
-[win:children]
+[core:children]
 iis
+
+[win:children]
+core
 
 
