@@ -1,0 +1,14 @@
+---
+- hosts: s12
+  tasks:
+  - name: Ensure IIS Server is installed
+    win_feature:
+      name: Web-server
+      status: present
+  - name: Deploy index.htm file
+    template:
+      src: iisstart.j2
+      dest: c:\inetpub\wwwroot\iisstart.htm
+
+
+
