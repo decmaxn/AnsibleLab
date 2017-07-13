@@ -1,2 +1,8 @@
 ---
-192.168.33.253 ansible_user=vagrant ansible_password=vagrant ansible_connection=winrm ansible_port=5985
+[iis]
+s12	ansible_host=192.168.33.253
+
+[win:children]
+iis
+
+
