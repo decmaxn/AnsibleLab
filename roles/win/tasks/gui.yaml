@@ -1,0 +1,8 @@
+---
+- name: "Keep Gui"
+  win_feature:
+    name: Server-Gui-Shell, Server-Gui-Mgmt-Infra
+    state: present
+  notify:
+  - Reboot
+
