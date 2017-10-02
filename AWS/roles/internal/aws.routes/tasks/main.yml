@@ -1,0 +1,54 @@
+---
+# tasks file for aws.routes
+- name: Ensure that the VPC has an Internet Gateway.
+  ec2_vpc_igw:
+    aws_secret_key: "{{ aws_secret_key.stdout }}"
+    aws_access_key: "{{ aws_access_key.stdout }}"
+    region: "{{ vpc.region }}"
+    state: present
+    vpc_id: "{{ vpc_id_fact }}"
+  register: igw_results
+
+- name: Create private route.
+  ec2_vpc_route_table:
+    aws_secret_key: "{{ aws_secret_key.stdout }}"
+    aws_access_key: "{{ aws_access_key.stdout }}"
+    region: "{{ vpc.region }}"
+    state: present
+    subnets: "{{ subnet_facts.subnets|selectattr('tags.Route', 'equalto', 'private')|map(attribute='cidr_block')|join(',') }}"
+    routes:
+      - dest: "{{ vpc.private_route.routes.dest }}"
+        instance_id: "{{ bastionhost_instance_results.tagged_instances.0.id }}"
+    tags: "{{ vpc.private_route.resource_tags }}"
+    vpc_id: "{{ vpc_id_fact }}"
+  when: vpc.private_route is defined and vpc.private_route != ''
+
+- name: Create public route.
+  ec2_vpc_route_table:
+    aws_secret_key: "{{ aws_secret_key.stdout }}"
+    aws_access_key: "{{ aws_access_key.stdout }}"
+    region: "{{ vpc.region }}"
+    state: present
+    subnets: "{{ subnet_facts.subnets|selectattr('tags.Route', 'equalto', 'public')|map(attribute='cidr_block')|join(',') }}"
+    routes:
+      - dest: "{{ vpc.public_route.routes.dest }}"
+        gateway_id: "{{ igw_results.gateway_id }}"
+    tags: "{{vpc.public_route.resource_tags }}"
+    vpc_id: "{{ vpc_id_fact }}"
+  when: vpc.public_route is defined and vpc.public_route != ''
+
+- name: Create peering route.
+  ec2_vpc_route_table:
+    aws_secret_key: "{{ aws_secret_key.stdout }}"
+    aws_access_key: "{{ aws_access_key.stdout }}"
+    region: "{{ vpc.region }}"
+    state: present
+    subnets: "{{ subnet_facts.subnets|selectattr('tags.Route', 'equalto', 'private')|map(attribute='cidr_block')|join(',') }}"
+    routes:
+      - dest: "{{ vpc.private_route.routes.dest }}"
+        instance_id: "{{ bastionhost_instance_results.tagged_instances.0.id }}"
+      - dest: "{{ vpc.peering_route.routes.dest }}"
+        vpc_peering_connection_id: "{{ vpc.peering_route.routes.peer_gateway }}"
+    tags: "{{ vpc.private_route.resource_tags }}"
+    vpc_id: "{{ vpc_id_fact }}"
+  when: vpc.peering_route is defined and vpc.peering_route != ''

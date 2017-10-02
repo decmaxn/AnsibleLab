@@ -1,0 +1,62 @@
+---
+# bastionhost instance settings
+bastionhost:
+  host_settings:
+    ipv4_ip_forward: net.ipv4.ip_forward
+
+# AWS instance settings. Note that they are list of dictionaries.
+ec2_bastionhost:
+  assign_public_ip: yes
+  count_tag:
+    Name: "{{type}}_{{env}}"
+  exact_count: "1"
+  groups:
+    - "{{type}}_{{env}}-inbound"
+  instance_profile_name: "{{type}}_{{env}}-role"
+  instance_tags:
+    Name: "{{type}}_{{env}}"
+    Type: '{{type}}'
+    Organization: '{{org}}'
+    Environment: "{{env}}"
+    Role: nat
+  instance_type: t2.micro
+  keypair: '{{ec2_keypair}}'
+  state: "running"
+  subnet: "{{env}}-public"
+  tenancy: default
+  wait: yes
+iam_bastionhost:
+    iam_type: role
+    name: '{{type}}_{{env}}_role'
+    state: present
+securitygroups_bastionhost:
+  name: '{{type}}_{{env}}-inbound'
+  rules:
+    - proto: tcp
+      from_port: 22
+      to_port: 22
+      cidr_ip: "0.0.0.0/0"
+    - proto: icmp
+      from_port: -1
+      to_port: -1
+      cidr_ip: "0.0.0.0/0"
+    - proto: tcp
+      from_port: 80
+      to_port: 80
+      cidr_ip: "{{ vpc.cidr_block }}"
+    - proto: tcp
+      from_port: 443
+      to_port: 443
+      cidr_ip: "{{ vpc.cidr_block }}"
+  tags:
+    Name: '{{type}}_{{env}}-inbound'
+    Type: '{{type}}'
+    Organization: '{{org}}'
+    Environment: "{{env}}"
+securitygroups_bastionhost_internal:
+  name: '{{type}}_{{env}}-inbound_internal'
+  tags:
+    Name: "{{type}}_{{env}}-inbound_internal"
+    Type: '{{type}}'
+    Organization: '{{org}}'
+    Environment: "{{env}}"

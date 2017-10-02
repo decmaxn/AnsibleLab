@@ -1,0 +1,8 @@
+
+ec2_tag_Name: "{{type}}_{{env}}"
+ec2_tag_Type: "{{type}}"
+ec2_tag_Environment: "{{env}}"
+
+
+ansible_python_interpreter: /usr/bin/python2.7
+

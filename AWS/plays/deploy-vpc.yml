@@ -1,0 +1,22 @@
+---
+#####
+# Initial AWS deployment
+#####
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  environment:
+    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+  pre_tasks:
+    - include: includeVars.yml
+  vars_files:
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/aws_infrastructure.yml
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/vault.yml
+
+  roles:
+    - role: aws.vpc
+    - role: aws.vpc_facts
+      filters:
+        "tag:Environment": '{{env}}'
+    - role: aws.routes

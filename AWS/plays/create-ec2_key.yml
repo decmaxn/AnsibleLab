@@ -1,0 +1,27 @@
+---
+#####
+# Initial AWS deployment
+#####
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  environment:
+    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+
+  tasks:
+    - include: includeVars.yml
+    - name: Create an EC2 key
+      ec2_key:
+        name: "aws-{{ org }}-{{ env }}-key"
+        region: "{{ ec2_region }}"
+        state: present
+      register: ec2_key
+
+    - name: Save private key
+      copy: content="{{ ec2_key.key.private_key }}" dest="./{{ ec2_key.key.name }}.pem" mode=0600
+      when: ec2_key.changed
+
+  vars_files:
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/aws_infrastructure.yml
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/vault.yml

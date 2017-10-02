@@ -1,0 +1,11 @@
+---
+  - name: "Download putty.zip file"
+    win_get_url: 
+      url: https://the.earth.li/~sgtatham/putty/latest/w64/putty.zip
+      dest: c:\Users\Public\Downloads\putty.zip
+      force: no
+  - name: Uncompress putty.zip
+    win_unzip:
+      src: c:\Users\Public\Downloads\putty.zip
+      dest: c:\putty\
+      rm: True

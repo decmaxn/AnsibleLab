@@ -1,0 +1,49 @@
+- include_vars: ../group_vars/all/apt.yml
+- include_vars: ../group_vars/all/common-vars.yml
+- include_vars: ../group_vars/{{type}}/{{type}}.yml
+  ignore_errors: yes
+- include_vars: ../group_vars/vars.yml
+  ignore_errors: yes
+- include_vars: ../group_vars/vault.yml
+  ignore_errors: yes
+  no_log: true
+- include_vars: ../env_vars/ec2/vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/vault.yml
+  ignore_errors: yes
+  no_log: true
+- include_vars: ../env_vars/ec2/common-vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/common-vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/{{type}}.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/vault.yml
+  ignore_errors: yes
+  no_log: true
+- include_vars: ../env_vars/ec2/{{env}}/{{ec2_region}}/common-vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/{{ec2_region}}/{{type}}.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/{{ec2_region}}/vars.yml
+  ignore_errors: yes
+- include_vars: ../env_vars/ec2/{{env}}/{{ec2_region}}/vault.yml
+  ignore_errors: yes
+  no_log: true
+
+- name: get AWS_ACCESS_KEY
+  sudo: no
+  local_action: shell echo ${AWS_ACCESS_KEY_ID}
+  changed_when: false
+  register: aws_access_key
+
+- name: get AWS_SECRET_KEY
+  sudo: no
+  local_action: shell echo ${AWS_SECRET_ACCESS_KEY}
+  register: aws_secret_key
+  no_log: true
+  changed_when: false
+  
+- debug: var=aws_access_key

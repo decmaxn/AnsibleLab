@@ -1,0 +1,92 @@
+---
+#####
+# Initial AWS deployment
+#####
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  environment:
+    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+  pre_tasks:
+    - include: includeVars.yml
+    
+  vars_files:
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/aws_infrastructure.yml
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/bastionhost.yml
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/internal_instances.yml
+    - ../env_vars/ec2/{{env}}/{{ec2_region}}/vault.yml
+
+  roles:
+ #   - role: localhost.ssh_key_configure
+    - role: aws.vpc
+    - role: aws.vpc_facts
+      filters:
+        "tag:Environment": '{{env}}'
+    - role: aws.bastionhost
+    - role: aws.routes
+#    - role: aws.securitygroups
+#    - role: aws.iam
+#    - role: aws.ec2
+#    - role: aws.ec2_facts
+#      filters:
+#        "tag:Environment": '{{env}}'
+#    - role: localhost.bastion_ssh_config
+#      bastion_vars: "{{ bastion_public_dns_name }}"
+#    - role: localhost.aws_ssh_keys
+#    - role: ansible.groups_init
+#    - role: tersmitten.fail2ban
+#
+#
+######
+## Initial raw configuration for bastionhost
+######
+#- hosts: tag_Name_{{type}}_{{env}}:&{{ec2_region}}
+#  become: yes
+#  #remote_user: ubuntu
+#  gather_facts: no
+#  environment:
+#    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+#    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+#  user: ubuntu
+#
+#  roles:
+#    - role: ubuntu.raw_install_python
+#
+######
+## Configure NAT instance
+######
+#- hosts: tag_Name_{{type}}_{{env}}:&{{ec2_region}}
+#  become: yes
+#  remote_user: ubuntu
+#  environment:
+#    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+#    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+#  gather_facts: yes
+#
+#  pre_tasks:
+#    - include: includeVars.yml
+#  vars_files:
+#    - ../env_vars/ec2/{{env}}/{{ec2_region}}/aws_infrastructure.yml
+#
+#  roles:
+#    - role: instance.ssh_aws_public_key
+#    - role: bastionhost.nat_config
+#
+######
+## Initial raw configuration for ALL instances
+######
+#- hosts: instances_private
+#  become: yes
+#  remote_user: ubuntu
+#  environment:
+#    EC2_INI_PATH: '{{ec2_inventory_ini}}'
+#    ANSIBLE_VAULT_PASSWORD_FILE: '{{vault_pass_file}}'
+#  gather_facts: no
+#
+#  roles:
+#    - role: ubuntu.raw_install_python
+#    - role: instance.ssh_aws_public_key
+#    - role: tersmitten.fail2ban
+#
+#

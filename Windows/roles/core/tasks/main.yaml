@@ -1,0 +1,8 @@
+---
+- name: Remove GUI
+  win_feature:
+   name: Server-Gui-Shell, Server-Gui-Mgmt-Infra
+   state: absent
+  notify:
+   - Reboot
+

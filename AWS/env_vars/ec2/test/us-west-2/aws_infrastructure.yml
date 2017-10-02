@@ -1,0 +1,51 @@
+---
+# AWS settings
+# Route53 settings
+route53:
+  domain: '{{ec2_region}}.compute.internal'
+# VPC settings
+vpc:
+  name: '{{env}}-VPC'
+  cidr_block: '172.34.0.0/16'
+  gateway: yes
+  image: '{{ec2_image}}'
+  image_user: ubuntu
+  #keypair: 'awskey'
+  keypair: '{{ec2_keypair}}'
+  region: '{{ec2_region}}'
+  resource_tags:
+    Name: "{{env}}-VPC"
+    Organization: '{{org}}'
+    Environment: '{{env}}'
+  subnets:
+    - cidr: "172.34.16.0/20"
+      az: "{{ec2_region}}b"
+      resource_tags:
+        Name: "{{env}}-public"
+        Organization: '{{org}}'
+        Environment: '{{env}}'
+        Role: '{{env}}_public_subnet'
+        Route: public
+    - cidr: "172.34.32.0/20"
+      az: "{{ec2_region}}a"
+      resource_tags:
+        Name: "{{env}}-public"
+        Organization: '{{org}}'
+        Environment: '{{env}}'
+        Role: '{{env}}_public_subnet'
+        Route: public
+    - cidr: "172.34.0.0/20"
+      az: "{{ec2_region}}c"
+      resource_tags:
+        Name: "{{env}}-public"
+        Organization: '{{org}}'
+        Environment: '{{env}}'
+        Role: '{{env}}_public_subnet'
+        Route: public
+  public_route:
+    routes:
+      dest: 0.0.0.0/0
+    resource_tags:
+      Name: "{{env}}-external_route"
+      Organization: '{{org}}'
+      Environment: '{{env}}'
