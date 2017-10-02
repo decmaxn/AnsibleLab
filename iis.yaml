@@ -1,7 +1,0 @@
----
-- hosts: s12
-  roles:
-    - iis
-    - core
-
-
