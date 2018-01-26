@@ -1,0 +1,7 @@
+# Install Python requirements and Ansible
+sudo -H pip install --no-cache-dir  --upgrade --requirement "python_requirements.txt under this same folder"
+
+
+# Install external roles
+ansible-galaxy install -r "roles_requirements.yml under roles folder" --force --no-deps -p "external folder under roles folder"
+

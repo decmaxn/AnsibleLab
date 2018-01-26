@@ -1,0 +1,7 @@
+# Required python packages for ansible
+pywinrm>=0.2.2
+
+# Ansible
+ansible
+
+#Other packages
