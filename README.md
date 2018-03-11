@@ -11,6 +11,10 @@
 ### Windows ###
 
 * It shows how easy it is to provision Windows with ansible. 
+  * 3 roles are demostrated, each can be added to a playbook depend on their use case. 
+    * For example, iis playbook include iis and core role. Utilies playbook include win role, which would install 3 programes. 
+  * 2 Windows servers will be provisioned. 
+    * depend on which version of windows, action can be skipped, for example GUI for Windows 2016.
 * cd Windows, vagrant up, and either ansible-playbook utiles.yaml or iis.yaml. 
 
 

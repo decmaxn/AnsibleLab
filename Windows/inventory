@@ -1,11 +1,13 @@
 ---
 [iis]
-s12	ansible_host=192.168.33.253
+s12 ansible_host=192.168.33.253
+
+[utiles]
+s16 ansible_host=192.168.33.254
 
 [core:children]
 iis
 
 [win:children]
 core
-
-
+utiles
