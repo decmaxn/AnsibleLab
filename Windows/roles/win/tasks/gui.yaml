@@ -3,6 +3,9 @@
   win_feature:
     name: Server-Gui-Shell, Server-Gui-Mgmt-Infra
     state: present
+  when:
+   - ansible_os_family == "Windows"
+   - ansible_distribution_major_version != "10"
   notify:
   - Reboot
 

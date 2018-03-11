@@ -1,4 +1,4 @@
 ---
-- hosts: s12
+- hosts: win
   roles:
     - win

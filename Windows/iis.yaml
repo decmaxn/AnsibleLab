@@ -1,5 +1,5 @@
 ---
-- hosts: s12
+- hosts: win
   roles:
     - iis
     - core

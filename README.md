@@ -16,6 +16,8 @@
   * 2 Windows servers will be provisioned. 
     * depend on which version of windows, action can be skipped, for example GUI for Windows 2016.
 * cd Windows, vagrant up, and either ansible-playbook utiles.yaml or iis.yaml. 
+  * Both playbooks apply to both Win2016 and Win2012.
+  * Since Win2016 doesn't support swith on/off Gui, Condition is demostrated with AND and NOT.
 
 
 ### AWS ###
