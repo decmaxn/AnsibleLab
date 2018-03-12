@@ -14,7 +14,7 @@
   vars_files:
     - ../env_vars/ec2/{{env}}/{{ec2_region}}/aws_infrastructure.yml
     - ../env_vars/ec2/{{env}}/{{ec2_region}}/bastionhost.yml
-    - ../env_vars/ec2/{{env}}/{{ec2_region}}/internal_instances.yml
+#    - ../env_vars/ec2/{{env}}/{{ec2_region}}/internal_instances.yml
     - ../env_vars/ec2/{{env}}/{{ec2_region}}/vault.yml
 
   roles:

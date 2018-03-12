@@ -1,0 +1,13 @@
+---
+
+- name: Setup a prod vpc with bastionhost instance on ec2
+  vars:
+    ec2_region: 'us-east-2'
+    type: 'bastionhost'
+    org: 'lab'
+    env: 'test'
+    instance_count: 1
+    ec2_inventory_ini: '../inventory/ec2-private.ini'
+    vault_pass_file: '../vault/vpass'
+
+  include: ../../../../bastionhost.yml

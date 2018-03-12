@@ -1,0 +1,14 @@
+---
+
+- name: Setup a dev vpc on instance on ec2
+  vars:
+    ec2_region: 'us-east-2'
+    type: 'key'
+    org: 'lab'
+    env: 'test'
+    instance_count: 1
+    ec2_inventory_ini: '../inventory/ec2.ini'
+    vault_pass_file: '../vault/vpass'
+
+  include: ../../../../create-ec2_key.yml
+  
