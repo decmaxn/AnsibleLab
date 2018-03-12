@@ -24,9 +24,11 @@
 
 * The frame work is complete, I will upload roles, vars and playbooks one by one, eventually making it a complete environment on AWS. 
 * cd AWS, cd plays, and run something like ansible-playbook provision/ec2/test/us-west-2/vpc.yml -i ../inventory/ec2.py
-  export AWS_ACCESS_KEY_ID='your access key'
+* export AWS_ACCESS_KEY_ID='your access key'
   export AWS_SECRET_ACCESS_KEY='your secret key'
-  Make sure you have set above environment variables before run asible. 
+  If you don't have aws profile properly defined yet, make sure you have set above environment variables before run asible. 
+  * if it's properly defined, add AWS_PROFILE=profilename in front of the ansible-playbook command. 
+    * To switch to another aws account requires 2fa, `source switchrole_2fa.sh` will get the environment variable set properly. 
 * To show the structure, vault password file is included in this repo, but there is only place holder in files been encrypted 
 
 ### Who do I talk to? ###
