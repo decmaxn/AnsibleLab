@@ -1,0 +1,11 @@
+- hosts: bastion
+  gather_facts: false
+  user: ubuntu
+  become: true
+  roles:
+    - role: "tomashavlas.ansible-role-authorized_keys"
+      authorized_keys__list:
+        - key: "{{ lookup('file', 'id_rsa.pub') }}"
+          user: "ubuntu"
+          exclusive: false
+          #disabled: true

@@ -1,0 +1,2 @@
+- src: git+https://github.com/tomashavlas/ansible-role-authorized_keys.git
+  name: tomashavlas.ansible-role-authorized_keys
